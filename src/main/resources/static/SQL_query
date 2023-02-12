@@ -1,0 +1,10 @@
+create table for_itemsrus.items
+(
+	id bigserial not null,
+	title varchar(255),
+	description varchar(255),
+	price int,
+	city varchar(255),
+	author varchar(255)
+);
+
