@@ -1,11 +1,13 @@
 package com.alekkras.listOfItems.services;
 
-import com.alekkras.listOfItems.models.Item;
+import com.alekkras.listOfItems.models.*;
 import com.alekkras.listOfItems.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -20,9 +22,37 @@ public class ItemsService {
 		return itemRepository.findAll();
 	}
 
-	public void saveItem(Item item) {
-		log.info("Saving new {}", item);
+	public void saveItem(Item item, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
+		Image image1;
+		Image image2;
+		Image image3;
+		if (file1.getSize() != 0) {
+			image1 = toImageEntity(file1);
+			image1.setPreviewImage(true);
+			item.addImageToItem(image1);
+		}
+		if (file2.getSize() != 0) {
+			image2 = toImageEntity(file2);
+			item.addImageToItem(image2);
+		}
+		if (file3.getSize() != 0) {
+			image3 = toImageEntity(file3);
+			item.addImageToItem(image3);
+		}
+		log.info("Saving new Item. Title: {}; Author: {}", item.getTitle(), item.getAuthor());
+		Item itemFromDb = itemRepository.save(item);
+		itemFromDb.setPrewiewImageId(itemFromDb.getImages().get(0).getId());
 		itemRepository.save(item);
+	}
+
+	private Image toImageEntity(MultipartFile file) throws IOException {
+		Image image = new Image();
+		image.setName(file.getName());
+		image.setOriginalFileName(file.getOriginalFilename());
+		image.setContentType(file.getContentType());
+		image.setSize(file.getSize());
+		image.setBytes(file.getBytes());
+		return image;
 	}
 
 	public void deleteItem(Long id) {

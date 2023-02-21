@@ -1,10 +1,55 @@
-create table for_itemsrus.items
-(
-	id bigserial not null,
-	title varchar(255),
-	description varchar(255),
-	price int,
-	city varchar(255),
-	author varchar(255)
-);
+-- DROP TABLE IF EXISTS for_items.imags;
 
+SET client_encoding = 'UTF-8';
+
+CREATE TABLE for_items.imags
+(
+    id smallint NOT NULL,
+    name character varying COLLATE pg_catalog."default",
+    original_file_name character varying COLLATE pg_catalog."default",
+    size integer,
+    is_preview_image boolean,
+    content_type character varying COLLATE pg_catalog."default",
+    itm_id bigint,
+    bytes oid,
+    item_id bigint,
+    CONSTRAINT imags_pkey PRIMARY KEY (id),
+    CONSTRAINT fk4fi4djsq0fvk2m5ysu4hsv692 FOREIGN KEY (item_id)
+        REFERENCES for_items.itm (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fkn29yi7lfo40c7u30ubjxmm0v2 FOREIGN KEY (item_id)
+        REFERENCES for_items.itms (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT itms_fk FOREIGN KEY (itm_id)
+        REFERENCES for_items.itm (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+
+-- Table: for_items.itm
+
+-- DROP TABLE IF EXISTS for_items.itm;
+
+CREATE TABLE IF NOT EXISTS for_items.itm
+(
+    id bigint NOT NULL DEFAULT nextval('for_items.itm_id_seq'::regclass),
+    title character varying(155) COLLATE pg_catalog."default",
+    price integer,
+    description character varying(255) COLLATE pg_catalog."default",
+    city character varying(65) COLLATE pg_catalog."default",
+    author character varying(35) COLLATE pg_catalog."default",
+    date_of_created date,
+    prewiew_image_id bigint,
+    CONSTRAINT itm_pk PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS for_items.itm
+    OWNER to postgres;

@@ -3,17 +3,16 @@ package com.alekkras.listOfItems.models;
 import lombok.*;
 
 import javax.persistence.*;
-//
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
-@Table(name = "items")
+@Table(name = "itm")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Item {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
@@ -27,4 +26,20 @@ public class Item {
 	private String city;
 	@Column(name = "author")
 	private String author;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+		mappedBy = "item")
+	private List<Image> images = new ArrayList<>();
+	private Long prewiewImageId;
+	private LocalDateTime dateOfCreated;
+
+	@PrePersist
+	private void init() {
+		dateOfCreated = LocalDateTime.now();
+	}
+
+	public void addImageToItem(Image image) {
+		image.setItem(this);
+		images.add(image);
+	}
 }
