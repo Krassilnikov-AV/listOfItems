@@ -3,8 +3,7 @@ package com.alekkras.listOfItems.models;
 import lombok.*;
 
 import javax.persistence.*;
-
-
+//
 
 @Entity
 @Table(name = "items")
