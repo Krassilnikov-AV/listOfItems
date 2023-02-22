@@ -18,10 +18,7 @@ CREATE TABLE for_items.imags
         REFERENCES for_items.itm (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT fkn29yi7lfo40c7u30ubjxmm0v2 FOREIGN KEY (item_id)
-        REFERENCES for_items.itms (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+
     CONSTRAINT itms_fk FOREIGN KEY (itm_id)
         REFERENCES for_items.itm (id) MATCH SIMPLE
         ON UPDATE CASCADE
