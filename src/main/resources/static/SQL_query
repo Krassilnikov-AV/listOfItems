@@ -50,3 +50,38 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS for_items.itm
     OWNER to postgres;
+
+    -- Table: for_items.users
+
+    -- DROP TABLE IF EXISTS for_items.users;
+
+    CREATE TABLE IF NOT EXISTS for_items.users
+    (
+        id bigint NOT NULL DEFAULT nextval('for_items.users_id_seq'::regclass),
+        email integer NOT NULL,
+        numberphone integer NOT NULL,
+        active boolean,
+        date_of_created timestamp without time zone,
+        password bigint NOT NULL,
+        image_id bigint,
+        name character varying(155) COLLATE pg_catalog."default" NOT NULL,
+        CONSTRAINT users_pk PRIMARY KEY (id),
+        CONSTRAINT users_fk FOREIGN KEY (image_id)
+            REFERENCES for_items.imags (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+            NOT VALID
+    )
+
+    TABLESPACE pg_default;
+
+    ALTER TABLE IF EXISTS for_items.users
+        OWNER to postgres;
+    -- Index: fki_users_fk
+
+    -- DROP INDEX IF EXISTS for_items.fki_users_fk;
+
+    CREATE INDEX IF NOT EXISTS fki_users_fk
+        ON for_items.users USING btree
+        (image_id ASC NULLS LAST)
+        TABLESPACE pg_default;
