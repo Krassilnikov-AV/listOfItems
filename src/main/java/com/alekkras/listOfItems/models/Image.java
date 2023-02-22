@@ -3,7 +3,7 @@ package com.alekkras.listOfItems.models;
 import lombok.*;
 
 import javax.persistence.*;
-
+// for branch 2_added autoriz....
 @Entity
 @Table(name = "imags")
 @Data
