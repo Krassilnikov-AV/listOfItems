@@ -1,28 +1,33 @@
 package com.alekkras.listOfItems.services;
 
 import com.alekkras.listOfItems.models.*;
-import com.alekkras.listOfItems.repositories.ItemRepository;
+import com.alekkras.listOfItems.repositories.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
+
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ItemsService {
-
 	private final ItemRepository itemRepository;
+	private final UserRepository userRepository;
+
 
 	public List<Item> listItems(String title) {
 		if (title != null) return itemRepository.findByTitle(title);
 		return itemRepository.findAll();
 	}
 
-	public void saveItem(Item item, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
+	public void saveItem(Principal principal, Item item, MultipartFile file1, MultipartFile file2,
+						 MultipartFile file3) throws IOException {
+		item.setUser(getUserByPrincipal(principal));
 		Image image1;
 		Image image2;
 		Image image3;
@@ -39,11 +44,17 @@ public class ItemsService {
 			image3 = toImageEntity(file3);
 			item.addImageToItem(image3);
 		}
-		log.info("Saving new Item. Title: {}; Author: {}", item.getTitle(), item.getAuthor());
+		log.info("Saving new Item. Title: {}; Author email: {}", item.getTitle(), item.getUser().getEmail());
 		Item itemFromDb = itemRepository.save(item);
 		itemFromDb.setPrewiewImageId(itemFromDb.getImages().get(0).getId());
 		itemRepository.save(item);
 	}
+
+	public User getUserByPrincipal(Principal principal) {
+		if (principal == null) return new User();
+		return userRepository.findByEmail(principal.getName());
+	}
+
 
 	private Image toImageEntity(MultipartFile file) throws IOException {
 		Image image = new Image();

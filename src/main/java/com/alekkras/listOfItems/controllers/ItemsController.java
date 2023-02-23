@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class ItemsController {
@@ -15,8 +17,10 @@ public class ItemsController {
 
 
 	@GetMapping("/")
-	public String items(@RequestParam(name = "title", required = false) String title, Model model) {
+	public String items(@RequestParam(name = "title", required = false) String title, Principal principal,
+						Model model) {
 		model.addAttribute("items", itemsService.listItems(title));
+		model.addAttribute("user", itemsService.getUserByPrincipal(principal));
 		return "items";
 	}
 
@@ -32,8 +36,8 @@ public class ItemsController {
 	public String createItem(@RequestParam("file1") MultipartFile file1,
 							 @RequestParam("file2") MultipartFile file2,
 							 @RequestParam("file3") MultipartFile file3,
-							 Item item) throws Exception {
-		itemsService.saveItem(item, file1, file2, file3);
+							 Item item, Principal principal) throws Exception {
+		itemsService.saveItem(principal, item, file1, file2, file3);
 		return "redirect:/";
 	}
 
