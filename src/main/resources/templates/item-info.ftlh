@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +13,6 @@
 <b>Описание товара: </b>${item.description}<br>
 <b>Цена: </b>${item.price}<br>
 <b>Город: </b>${item.city}<br>
-<b>Автор: </b>${item.user.name}<br>
-<hr>
-
+<b>Автор: </b><a href="/user/${item.user.id}">${item.user.name}</a><br>
 </body>
 </html>

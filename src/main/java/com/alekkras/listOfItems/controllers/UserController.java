@@ -32,8 +32,10 @@ public class UserController {
 		return "redirect:/login";
 	}
 
-	@GetMapping("/hello")
-	public String securityUrl() {
-		return "hello";
+	@GetMapping("/user/{user}")
+	public String userInfo(@PathVariable("user") User user, Model model) {
+		model.addAttribute("user", user);
+		model.addAttribute("items", user.getItems());
+		return "user-info";
 	}
 }
