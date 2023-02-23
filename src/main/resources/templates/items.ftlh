@@ -5,6 +5,9 @@
 </head>
 <body>
 <h1>ItemsRUS</h1><hr>
+<div>
+	<p><a href="/admin">Панель администратора</a></p>
+</div>
 <#if user.email??>
 	<h3>Имя пользователя: <i>${user.name}</i></h3>
 	<form action="/logout" method="post">
