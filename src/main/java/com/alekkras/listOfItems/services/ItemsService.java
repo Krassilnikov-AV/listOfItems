@@ -46,7 +46,7 @@ public class ItemsService {
 		}
 		log.info("Saving new Item. Title: {}; Author email: {}", item.getTitle(), item.getUser().getEmail());
 		Item itemFromDb = itemRepository.save(item);
-		itemFromDb.setPrewiewImageId(itemFromDb.getImages().get(0).getId());
+		itemFromDb.setPreviewImageId(itemFromDb.getImages().get(0).getId());
 		itemRepository.save(item);
 	}
 
@@ -74,3 +74,4 @@ public class ItemsService {
 		return itemRepository.findById(id).orElse(null);
 	}
 }
+

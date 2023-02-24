@@ -28,16 +28,14 @@ public class Item {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
 		mappedBy = "item")
 	private List<Image> images = new ArrayList<>();
-	private Long prewiewImageId;
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn
 	private User user;
+	private Long previewImageId;
 	private LocalDateTime dateOfCreated;
-
 	@PrePersist
-	private void init() {
-		dateOfCreated = LocalDateTime.now();
-	}
+	private void onCreate() { dateOfCreated = LocalDateTime.now(); }
+
 
 	public void addImageToItem(Image image) {
 		image.setItem(this);

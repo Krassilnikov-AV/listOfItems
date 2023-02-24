@@ -1,9 +1,8 @@
 package com.alekkras.listOfItems.models;
-
 import lombok.*;
 
 import javax.persistence.*;
-// for branch 2_added autoriz....
+
 @Entity
 @Table(name = "imags")
 @Data
@@ -25,8 +24,6 @@ public class Image {
 	@Column(name = "is_preview_image")
 	private boolean isPreviewImage;
 	@Lob
-//	@Type(type = "org.hibernate.type.ImageType")
-//	@Column(name = "bytes", columnDefinition = "BLOB NOT NULL")
 	private byte[] bytes;
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	private Item item;

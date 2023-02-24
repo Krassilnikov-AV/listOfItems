@@ -1,5 +1,6 @@
 package com.alekkras.listOfItems.controllers;
 
+
 import com.alekkras.listOfItems.models.Image;
 import com.alekkras.listOfItems.repositories.ImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ public class ImageController {
 	@GetMapping("/images/{id}")
 	private ResponseEntity<?> getImageById(@PathVariable Long id) {
 		Image image = imageRepository.findById(id).orElse(null);
-		assert image != null;
 		return ResponseEntity.ok()
 			.header("fileName", image.getOriginalFileName())
 			.contentType(MediaType.valueOf(image.getContentType()))
