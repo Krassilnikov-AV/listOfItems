@@ -25,7 +25,8 @@ public class ItemsService {
 		return itemRepository.findAll();
 	}
 
-	public void saveItem(Principal principal, Item item, MultipartFile file1, MultipartFile file2,
+	public void saveItem(Principal principal, Item item, MultipartFile file1,
+						 MultipartFile file2,
 						 MultipartFile file3) throws IOException {
 		item.setUser(getUserByPrincipal(principal));
 		Image image1;
@@ -44,7 +45,8 @@ public class ItemsService {
 			image3 = toImageEntity(file3);
 			item.addImageToItem(image3);
 		}
-		log.info("Saving new Item. Title: {}; Author email: {}", item.getTitle(), item.getUser().getEmail());
+		log.info("Saving new Item. Title: {}; Author email: {}", item.getTitle(),
+			item.getUser().getEmail());
 		Item itemFromDb = itemRepository.save(item);
 		itemFromDb.setPreviewImageId(itemFromDb.getImages().get(0).getId());
 		itemRepository.save(item);
@@ -74,4 +76,3 @@ public class ItemsService {
 		return itemRepository.findById(id).orElse(null);
 	}
 }
-
